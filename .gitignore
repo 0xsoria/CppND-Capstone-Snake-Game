@@ -1,1 +1,3 @@
 .github/**
+/build
+/.DS_Store

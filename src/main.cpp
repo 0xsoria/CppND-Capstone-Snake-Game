@@ -13,8 +13,13 @@ int main() {
 
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
-  Game game(kGridWidth, kGridHeight);
+  Timer timer(5);
+
+  auto asyncTimer = timer.StartTimer();
+  Game game(kGridWidth, kGridHeight, timer);
   game.Run(controller, renderer, kMsPerFrame);
+  asyncTimer.get();  
+
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";
   std::cout << "Size: " << game.GetSize() << "\n";

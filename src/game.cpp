@@ -1,12 +1,13 @@
 #include "game.h"
 #include <iostream>
 #include "SDL.h"
+#include <Timer.h>
 
-Game::Game(std::size_t grid_width, std::size_t grid_height)
+Game::Game(std::size_t grid_width, std::size_t grid_height, Timer &timer)
     : snake(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
-      random_h(0, static_cast<int>(grid_height - 1)) {
+      random_h(0, static_cast<int>(grid_height - 1)), timer(timer) {
   PlaceFood();
 }
 
@@ -24,6 +25,11 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
+    int seconds = timer.TimerLeft();
+    if (seconds <= 0) {
+      TimeIsUp();
+    }
+
     Update();
     renderer.Render(snake, food);
 
@@ -36,7 +42,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+      renderer.UpdateWindowTitle(score, frame_count, seconds);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -77,10 +83,15 @@ void Game::Update() {
   if (food.x == new_x && food.y == new_y) {
     score++;
     PlaceFood();
+    timer.ResetTimer();
     // Grow snake and increase speed.
     snake.GrowBody();
     snake.speed += 0.02;
   }
+}
+
+void Game::TimeIsUp() {
+  snake.alive = false;
 }
 
 int Game::GetScore() const { return score; }
