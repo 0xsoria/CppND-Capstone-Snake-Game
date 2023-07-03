@@ -14,11 +14,17 @@ private:
 public:
     Timer(int duration);
     ~Timer();
+    Timer(const Timer &source);
+    Timer &operator=(const Timer &source);
+    Timer(Timer &&source);
+    Timer &operator=(Timer &&source);
+
     int time_left;
     int TimerLeft();
     std::future<void> StartTimer();
     void ResetTimer();
     void RunTimer();
+    void SetTimerTo(int value);
 };
 
 #endif
