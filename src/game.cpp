@@ -25,6 +25,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
+
+    //Timer
     int seconds = timer.TimerLeft();
     if (seconds <= 0) {
       TimeIsUp();

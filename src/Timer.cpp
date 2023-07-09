@@ -63,7 +63,6 @@ void Timer::SetTimerTo(int value) {
 }
 
 int Timer::TimerLeft() {
-    std::lock_guard<std::mutex> lck(_mutex);
     return time_left;
 }
 
