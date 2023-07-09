@@ -30,6 +30,14 @@ In this project, you can build your own C++ application or extend this Snake gam
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`.
 
+## Rubric Points
+
+- Project contains a README;
+- Project compiles and run;
+- Object uses OOP, class initalization, destructors, encapsulation, loops, template and more;
+- Uses rule of five, destructors appropriately, reference in function declarations;
+- Use of concurrency for timer;
+
 
 ## CC Attribution-ShareAlike 4.0 International
 
