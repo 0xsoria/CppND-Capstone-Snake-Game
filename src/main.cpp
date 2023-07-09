@@ -15,10 +15,8 @@ int main() {
   Controller controller;
   Timer timer(15);
 
-  auto asyncTimer = timer.StartTimer();
   Game game(kGridWidth, kGridHeight, timer);
   game.Run(controller, renderer, kMsPerFrame);
-  asyncTimer.get();  
 
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";

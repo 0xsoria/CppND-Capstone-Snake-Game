@@ -25,6 +25,7 @@ public:
     void ResetTimer();
     void RunTimer();
     void SetTimerTo(int value);
+    void DecreaseTimer(int value);
 };
 
 #endif

@@ -2,6 +2,8 @@
 #include <iostream>
 #include "SDL.h"
 #include <Timer.h>
+#include <random>
+#include <memory>
 
 Game::Game(std::size_t grid_width, std::size_t grid_height, Timer &timer)
     : snake(grid_width, grid_height),
@@ -9,7 +11,6 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, Timer &timer)
       random_w(0, static_cast<int>(grid_width - 1)),
       random_h(0, static_cast<int>(grid_height - 1)), timer(timer) {
   PlaceFood();
-  PlacePoisonedFood();
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -20,6 +21,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
+
+  auto asyncTimer = timer.StartTimer();
 
   while (running) {
     frame_start = SDL_GetTicks();
@@ -57,6 +60,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       SDL_Delay(target_frame_duration - frame_duration);
     }
   }
+  asyncTimer.get();
 }
 
 void Game::PlaceFood() {
@@ -86,6 +90,14 @@ void Game::PlacePoisonedFood() {
       return;
     }
   }
+  
+}
+
+bool binomial_trial(const double p = 0.5) {
+    static auto dev = std::random_device();
+    static auto gen = std::mt19937{dev()};
+    static auto dist = std::uniform_real_distribution<double>(0,1);
+    return (dist(gen) < p);
 }
 
 void Game::Update() {
@@ -99,8 +111,13 @@ void Game::Update() {
   // Check if there's food over here
   if (food.x == new_x && food.y == new_y) {
     score++;
-    PlaceFood();
-    PlacePoisonedFood();
+
+    if (binomial_trial()) {
+      PlaceFood();
+    } else {
+      PlacePoisonedFood();
+    }
+
     timer.ResetTimer();
     // Grow snake and increase speed.
     snake.GrowBody();
@@ -116,11 +133,14 @@ void Game::Update() {
         TimeIsUp();
         return;
       }
-      timer.SetTimerTo(new_value);
+      timer.DecreaseTimer(new_value);
       snake.speed -= 0.02;
       score--;
+    if (binomial_trial()) {
       PlaceFood();
+    } else {
       PlacePoisonedFood();
+    }
   }
 }
 

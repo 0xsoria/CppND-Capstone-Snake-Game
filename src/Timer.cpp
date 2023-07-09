@@ -66,6 +66,11 @@ int Timer::TimerLeft() {
     return time_left;
 }
 
+void Timer::DecreaseTimer(int value) {
+    std::lock_guard<std::mutex> lck(_mutex);
+    time_left = value;
+}
+
 std::future<void> Timer::StartTimer() {
     std::cout << "Started " << timer_duration << " timer\n";
     std::future<void> asr = std::async(std::launch::async, [this]() {
@@ -83,7 +88,7 @@ void Timer::RunTimer() {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         std::lock_guard<std::mutex> lck(_mutex);
         this->time_left -= 1;
-        std::cout << "Time left " << time_left << "\n";
+        std::cout << "Time left " << time_left <<  "\n";
     }
 }
 
