@@ -19,6 +19,7 @@ class Game {
  private:
   Snake snake;
   SDL_Point food;
+  SDL_Point poisoned_food;
   Timer &timer;
 
   std::random_device dev;
@@ -31,6 +32,7 @@ class Game {
   void PlaceFood();
   void Update();
   void TimeIsUp();
+  void PlacePoisonedFood();
 };
 
 #endif

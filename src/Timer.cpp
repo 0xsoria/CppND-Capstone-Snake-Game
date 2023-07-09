@@ -77,7 +77,7 @@ std::future<void> Timer::StartTimer() {
 
 void Timer::RunTimer() {
     while (this->time_left <= this->timer_duration) {
-        if (time_left == 0) {
+        if (time_left <= 0) {
             return;
         }
         std::this_thread::sleep_for(std::chrono::seconds(1));

@@ -9,6 +9,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, Timer &timer)
       random_w(0, static_cast<int>(grid_width - 1)),
       random_h(0, static_cast<int>(grid_height - 1)), timer(timer) {
   PlaceFood();
+  PlacePoisonedFood();
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -33,7 +34,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     }
 
     Update();
-    renderer.Render(snake, food);
+    renderer.Render(snake, food, poisoned_food);
 
     frame_end = SDL_GetTicks();
 
@@ -73,6 +74,20 @@ void Game::PlaceFood() {
   }
 }
 
+void Game::PlacePoisonedFood() {
+  int x, y;
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+
+    if (!snake.SnakeCell(x, y) && food.x != x && food.y != y) {
+      poisoned_food.x = x;
+      poisoned_food.y = y;
+      return;
+    }
+  }
+}
+
 void Game::Update() {
   if (!snake.alive) return;
 
@@ -85,10 +100,27 @@ void Game::Update() {
   if (food.x == new_x && food.y == new_y) {
     score++;
     PlaceFood();
+    PlacePoisonedFood();
     timer.ResetTimer();
     // Grow snake and increase speed.
     snake.GrowBody();
     snake.speed += 0.02;
+
+  } else if (poisoned_food.x == new_x && poisoned_food.y == new_y) {
+
+    //Decrese 2 seconds, make the snake slower and decrease score.
+      int timer_value = timer.TimerLeft();
+      int new_value = timer_value - 2;
+
+      if (new_value <= 0) {
+        TimeIsUp();
+        return;
+      }
+      timer.SetTimerTo(new_value);
+      snake.speed -= 0.02;
+      score--;
+      PlaceFood();
+      PlacePoisonedFood();
   }
 }
 
