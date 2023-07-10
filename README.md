@@ -32,11 +32,24 @@ In this project, you can build your own C++ application or extend this Snake gam
 
 ## Rubric Points
 
-- Project contains a README;
-- Project compiles and run;
-- Object uses OOP, class initalization, destructors, encapsulation, loops, template and more;
-- Uses rule of five, destructors appropriately, reference in function declarations;
-- Use of concurrency for timer;
+#### Compiling and Testing
+Project compiles and run. Check `Basic Build Instructions section to build the project`.
+
+#### Loops, Functions, I/O
+The project code is clearly organized into functionsa and classes. Functions uses loops when necessary and I/O to control the snake.
+Example: `Timer` class, `RunTimer` function;
+
+#### Object Oriented Programming
+The project is organized into classes, uses classes methods to perform tasks, contains destructors, encapsulation, templates and more. Classes have public and private members when necessary;
+- Example: `Game` and `Timer` classes (And all the others);
+
+#### Memory Management
+The project makes use of references in function declarations and constructors. Both references and pointers used all around the project.
+- Example: `Game` class constructor and class;
+
+#### Concurrency
+Project uses a secondary thread for the 10 seconds timer and restart this timer once the snake eats a food or decrease 2 seconds once the snake eats a poisoned food.
+Example: `Timer` class, `StartTimer` function;
 
 ## Explaining my version of the game
 - The game has a 10 seconds timer, if you don't eat any food during this time, the snake dies;
