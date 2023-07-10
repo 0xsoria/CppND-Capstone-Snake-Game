@@ -13,7 +13,7 @@ int main() {
 
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
-  Timer timer(15);
+  Timer timer(10);
 
   Game game(kGridWidth, kGridHeight, timer);
   game.Run(controller, renderer, kMsPerFrame);

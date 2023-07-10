@@ -38,6 +38,9 @@ In this project, you can build your own C++ application or extend this Snake gam
 - Uses rule of five, destructors appropriately, reference in function declarations;
 - Use of concurrency for timer;
 
+## Explaining my version of the game
+- The game has a 10 seconds timer, if you don't eat any food during this time, the snake dies;
+- Poisoned food will appear in the screen, each poisoned food the snake eats, it will decrease the timer in 2 seconds and make the snake run slower;
 
 ## CC Attribution-ShareAlike 4.0 International
 
