@@ -93,10 +93,11 @@ void Game::PlacePoisonedFood() {
   
 }
 
-bool binomial_trial(const double p = 0.5) {
+template <typename Prob = double>
+bool binomial_trial(const Prob p = 0.5) {
     static auto dev = std::random_device();
     static auto gen = std::mt19937{dev()};
-    static auto dist = std::uniform_real_distribution<double>(0,1);
+    static auto dist = std::uniform_real_distribution<Prob>(0,1);
     return (dist(gen) < p);
 }
 
