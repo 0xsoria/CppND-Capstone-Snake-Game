@@ -28,7 +28,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, snake);
+    controller.HandleInput(running, snake, wallEnabled);
 
     //Timer
     int seconds = timer.TimerLeft();
@@ -109,6 +109,13 @@ void Game::Update() {
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
 
+  if (wallEnabled) {
+    if (new_x == 0 || new_y == 0) {
+      TimeIsUp();
+      return;
+    }
+  }
+
   // Check if there's food over here
   if (food.x == new_x && food.y == new_y) {
     score++;
@@ -147,6 +154,7 @@ void Game::Update() {
 
 void Game::TimeIsUp() {
   snake.alive = false;
+  timer.DecreaseTimer(0);
 }
 
 int Game::GetScore() const { return score; }

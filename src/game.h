@@ -21,6 +21,7 @@ class Game {
   SDL_Point food;
   SDL_Point poisoned_food;
   Timer &timer;
+  bool wallEnabled;
 
   std::random_device dev;
   std::mt19937 engine;
