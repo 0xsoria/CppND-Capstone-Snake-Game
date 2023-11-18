@@ -20,12 +20,16 @@ public:
     Timer(Timer &&source);
     Timer &operator=(Timer &&source);
 
+    bool paused = false;
     int TimerLeft();
     std::future<void> StartTimer();
     void ResetTimer();
     void RunTimer();
     void SetTimerTo(int value);
     void DecreaseTimer(int value);
+    void PauseResume();
+    bool IsPaused();
+    void SetPaused(bool paused);
 };
 
 #endif

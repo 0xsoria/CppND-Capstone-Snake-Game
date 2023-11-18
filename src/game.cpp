@@ -28,7 +28,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, snake, wallEnabled);
+    controller.HandleInput(running, snake, wallEnabled, timer.paused);
 
     //Timer
     int seconds = timer.TimerLeft();
@@ -60,6 +60,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       SDL_Delay(target_frame_duration - frame_duration);
     }
   }
+  timer.SetTimerTo(0);
   asyncTimer.get();
 }
 
@@ -103,6 +104,7 @@ bool binomial_trial(const Prob p = 0.5) {
 
 void Game::Update() {
   if (!snake.alive) return;
+  if (timer.IsPaused()) return;
 
   snake.Update();
 

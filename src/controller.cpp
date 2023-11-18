@@ -9,7 +9,7 @@ void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
   return;
 }
 
-void Controller::HandleInput(bool &running, Snake &snake, bool &wallEnabled) const {
+void Controller::HandleInput(bool &running, Snake &snake, bool &wallEnabled, bool &paused) const {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
     if (e.type == SDL_QUIT) {
@@ -36,11 +36,10 @@ void Controller::HandleInput(bool &running, Snake &snake, bool &wallEnabled) con
                           Snake::Direction::kLeft);
           break;
         case SDLK_w:
-          if (wallEnabled) {
-            wallEnabled = false;
-          } else {
-            wallEnabled = true;
-          }
+          wallEnabled = wallEnabled ? false : true;
+          break;
+        case SDLK_p:
+          paused = paused ? false : true;;
           break;
       }
     }

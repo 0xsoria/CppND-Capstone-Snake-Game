@@ -82,17 +82,30 @@ std::future<void> Timer::StartTimer() {
 
 void Timer::RunTimer() {
     while (this->time_left <= this->timer_duration) {
-        if (time_left <= 0) {
-            return;
+        if (!this->paused) {
+            if (time_left <= 0) {
+                return;
+            }
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            std::lock_guard<std::mutex> lck(_mutex);
+            this->time_left -= 1;
         }
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-        std::lock_guard<std::mutex> lck(_mutex);
-        this->time_left -= 1;
-        std::cout << "Time left " << time_left <<  "\n";
     }
 }
 
 void Timer::ResetTimer() {
     std::lock_guard<std::mutex> lck(_mutex);
     this->time_left = timer_duration + 1;
+}
+
+void Timer::PauseResume() {
+    this->paused = this->paused ? false : true;
+}
+
+void Timer::SetPaused(bool paused) {
+    this->paused = paused;
+}
+
+bool Timer::IsPaused() {
+    return this->paused;
 }
